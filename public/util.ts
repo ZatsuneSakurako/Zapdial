@@ -33,7 +33,10 @@ export function faviconUrl(pageUrl: string, size = 64): string {
 	if (!hasFaviconApiPermission) {
 		return `https://icons.duckduckgo.com/ip3/${new URL(pageUrl).hostname}.ico`;
 	}
-	return `${chrome.runtime.getURL("/_favicon/")}?pageUrl=${encodeURIComponent(pageUrl)}&size=${size}`;
+	return `${chrome.runtime.getURL("/_favicon/")}?${new URLSearchParams({
+		pageUrl,
+		size: size.toString(10),
+	})}`;
 }
 
 /**
