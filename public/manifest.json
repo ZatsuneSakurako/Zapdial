@@ -25,6 +25,7 @@
   },
 
   "permissions": ["bookmarks", "favicon", "storage"],
+  "optional_host_permissions": ["https://icons.duckduckgo.com/*"],
 
   "action": {
     "default_title": "Zapdial",

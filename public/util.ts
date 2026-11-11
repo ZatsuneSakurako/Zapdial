@@ -13,11 +13,27 @@ export function escapeHtml(s: string): string {
 	return s.replace(/[&<>"']/g, (c) => ESC[c]!);
 }
 
+export async function checkFaviconApiPermission(): Promise<boolean> {
+	try {
+		return await browser.permissions.contains({permissions: ["favicon"]});
+	} catch {
+		return false; // Firefox rejects unknown permissions → favicon API absent
+	}
+}
+
+let hasFaviconApiPermission = true;
+if (navigator.userAgent.includes('Firefox')) {
+	hasFaviconApiPermission = await checkFaviconApiPermission();
+}
+
 /**
  * Favicon served by Chrome's built-in favicon service (needs "favicon" permission).
  */
 export function faviconUrl(pageUrl: string, size = 64): string {
-	return `chrome-extension://${chrome.runtime.id}/_favicon/?pageUrl=${encodeURIComponent(pageUrl)}&size=${size}`;
+	if (!hasFaviconApiPermission) {
+		return `https://icons.duckduckgo.com/ip3/${new URL(pageUrl).hostname}.ico`;
+	}
+	return `${chrome.runtime.getURL("/_favicon/")}?pageUrl=${encodeURIComponent(pageUrl)}&size=${size}`;
 }
 
 /**
