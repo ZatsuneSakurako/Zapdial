@@ -1,0 +1,132 @@
+:root {
+	--bg: #1c1b22;
+	--fg: #fbfbfe;
+	--tile-bg: rgba(42, 42, 42, 0.9);
+	--tile-fg: var(--fg);
+	--tile-hover: rgb(from var(--tile-bg) r g b / 75%);
+	--tile-active: rgb(from var(--tile-bg) r g b / 50%);
+	--muted: #b0aec0;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	padding: 2.5rem 1.5rem;
+	background: var(--bg);
+	color: var(--fg);
+	font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+	font-size: 14px;
+}
+
+dial-grid {
+	width: min(100%, 960px);
+}
+
+/* --- 3-column grid --- */
+.grid {
+	display: grid;
+	grid-auto-rows: minmax(160px, auto);
+	grid-template-columns: repeat(3, 1fr);
+	gap: 0.75rem;
+	align-content: start;
+}
+
+/* --- Tiles --- */
+.tile {
+	background: var(--tile-bg, rgba(42, 42, 42, 0.9));
+	color: var(--tile-fg, var(--fg));
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.625rem;
+	min-height: 160px;
+	padding: 2rem 1rem 1.5rem;
+	border-radius: 12px;
+	text-decoration: none;
+	transition: background 120ms ease;
+}
+
+.tile:hover {
+	background: var(--tile-hover);
+}
+
+.tile:active {
+	background: var(--tile-active);
+}
+
+.icon {
+	display: block;
+	width: 64px;
+	height: 64px;
+	border-radius: 6px;
+}
+
+.folder-icon {
+	color: var(--muted);
+	display: grid;
+	place-items: center;
+}
+
+.label {
+	max-width: 100%;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow-wrap: anywhere;
+	text-align: center;
+	line-height: 1.3;
+}
+
+.count {
+	font-size: 11px;
+	color: var(--muted);
+}
+
+/* --- Breadcrumb / back --- */
+.crumbs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+	margin-bottom: 1rem;
+	min-height: 1.75rem;
+}
+
+.crumb {
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: var(--muted);
+	font: inherit;
+	padding: 0.25rem 0.5rem;
+	border-radius: 8px;
+	cursor: default;
+}
+
+button.crumb {
+	cursor: pointer;
+	color: var(--fg);
+}
+
+button.crumb:hover {
+	background: var(--tile-hover);
+}
+
+.crumb.current {
+	color: var(--fg);
+	font-weight: 600;
+}
+
+.empty {
+	grid-column: 1 / -1;
+	color: var(--muted);
+	text-align: center;
+	padding: 3rem 1rem;
+}

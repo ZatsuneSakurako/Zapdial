@@ -1,0 +1,50 @@
+{
+  "name": "Zapdial",
+  "version": "1.0.0",
+  "description": "Fast speed dial powered by your 'Speed Dial' bookmark folder.",
+  "author": "Zatsune Sakurako",
+
+  "manifest_version": 3,
+  "minimum_chrome_version": "146.0",
+
+  "icons": {
+    "16": "icons/zapdial-16.png",
+    "32": "icons/zapdial-32.png",
+    "48": "icons/zapdial-48.png",
+    "128": "icons/zapdial-128.png"
+  },
+
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+
+  "background": {
+    "service_worker": "background.js",
+    "scripts": ["background.js"],
+    "type": "module"
+  },
+
+  "permissions": ["bookmarks", "favicon", "storage"],
+
+  "action": {
+    "default_title": "Zapdial",
+    "default_icon": {
+      "16": "icons/zapdial-16.png",
+      "32": "icons/zapdial-32.png",
+      "48": "icons/zapdial-48.png",
+      "128": "icons/zapdial-128.png"
+    }
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{a3f9c72e-5b18-4d6f-92c4-7e1ab08d35f7}",
+      "strict_min_version": "153.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  }
+}
