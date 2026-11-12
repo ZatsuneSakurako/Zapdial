@@ -43,19 +43,40 @@ export class DialItem extends HTMLElement {
 		const isFolder = entry.kind === "folder";
 		anchor.href = isFolder ? "#" : entry.url!;
 		anchor.title = entry.title;
-		anchor.setAttribute(
-			"aria-label",
-			isFolder ? `Open folder ${entry.title}` : entry.title
-		);
+		anchor.setAttribute("aria-label", isFolder ? `Open folder ${entry.title}` : entry.title);
 
-		const media = isFolder
-			? `<span class="icon folder-icon">${FOLDER_ICON}</span>`
-			: `<img class="icon" src="${faviconUrl(entry.url!)}" alt="" width="128" height="128" loading="lazy" decoding="async">`;
-		const count = isFolder ? `<span class="count">${entry.childCount ?? 0}</span>` : "";
+		// Rebuild children from scratch each render.
+		while (anchor.firstChild) anchor.removeChild(anchor.firstChild);
 
-		// One innerHTML assignment per tile, built once.
-		anchor.innerHTML =
-			`${media}<span class="label">${escapeHtml(entry.title)}</span>${count}`;
+		const label = document.createElement("span");
+		label.className = "label";
+		label.textContent = entry.title;
+
+		if (isFolder) {
+			const icon = document.createElement("span");
+			icon.className = "icon folder-icon";
+			icon.innerHTML = FOLDER_ICON; // trusted, static constant — see note
+			anchor.append(icon);
+
+			anchor.append(label);
+
+			const count = document.createElement("span");
+			count.className = "count";
+			count.textContent = (entry.childCount ?? 0).toString(10);
+			anchor.append(count);
+		} else {
+			const img = document.createElement("img");
+			img.className = "icon";
+			img.src = faviconUrl(entry.url!);
+			img.alt = "";
+			img.width = 128;
+			img.height = 128;
+			img.loading = "lazy";
+			img.decoding = "async";
+			anchor.append(img);
+
+			anchor.append(label);
+		}
 	}
 
 	#onClick = (ev: MouseEvent): void => {
