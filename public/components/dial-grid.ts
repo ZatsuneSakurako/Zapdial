@@ -79,13 +79,6 @@ export class DialGrid extends HTMLElement {
 				});
 			}
 		}
-		// Folders first, then alphabetical. localeCompare is cached per pair by the engine.
-		if (!localStorage.getItem('no-sort')) {
-			entries.sort((a, b) =>
-				+(b.kind === "folder") - +(a.kind === "folder") ||
-				a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
-			);
-		}
 		return entries;
 	}
 
