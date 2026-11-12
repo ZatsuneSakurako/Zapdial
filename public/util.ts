@@ -1,18 +1,3 @@
-const ESC: Record<string, string> = {
-	"&": "&amp;",
-	"<": "&lt;",
-	">": "&gt;",
-	'"': "&quot;",
-	"'": "&#39;",
-};
-
-/**
- * Escape untrusted bookmark titles before inserting into innerHTML.
- */
-export function escapeHtml(s: string): string {
-	return s.replace(/[&<>"']/g, (c) => ESC[c]!);
-}
-
 export async function checkFaviconApiPermission(): Promise<boolean> {
 	try {
 		return await browser.permissions.contains({permissions: ["favicon"]});

@@ -1,9 +1,23 @@
 import type {DialEntry, DialNavigateDetail} from "../types.js";
-import {escapeHtml, faviconUrl} from "../util.js";
+import {faviconUrl} from "../util.js";
 
-const FOLDER_ICON =
-	'<svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor" aria-hidden="true">' +
-	'<path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2z"/></svg>';
+const SVG_NS = "http://www.w3.org/2000/svg";
+const FOLDER_ICON_TEMPLATE = (() => {
+	const svg = document.createElementNS(SVG_NS, "svg");
+	svg.setAttribute("viewBox", "0 0 24 24");
+	svg.setAttribute("width", "64");
+	svg.setAttribute("height", "64");
+	svg.setAttribute("fill", "currentColor");
+	svg.setAttribute("aria-hidden", "true");
+
+	const path = document.createElementNS(SVG_NS, "path");
+	path.setAttribute(
+		"d",
+		"M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2z"
+	);
+	svg.append(path);
+	return svg;
+})();
 
 /**
  * A single tile. Bookmarks navigate natively via the anchor;
@@ -25,7 +39,9 @@ export class DialItem extends HTMLElement {
 		if (this.isConnected) this.#render();
 	}
 
-	/** Build the tile DOM lazily — never in the constructor. */
+	/**
+	 * Build the tile DOM lazily — never in the constructor.
+	 */
 	connectedCallback(): void {
 		if (!this.#anchor) {
 			const anchor = document.createElement("a");
@@ -55,7 +71,7 @@ export class DialItem extends HTMLElement {
 		if (isFolder) {
 			const icon = document.createElement("span");
 			icon.className = "icon folder-icon";
-			icon.innerHTML = FOLDER_ICON; // trusted, static constant — see note
+			icon.append(FOLDER_ICON_TEMPLATE.cloneNode(true));
 			anchor.append(icon);
 
 			anchor.append(label);
