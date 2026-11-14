@@ -7,7 +7,7 @@ nested folders and instant, in-memory folder navigation.
 
 Built as a small showcase of modern extension development:
 
-- **Zero dependencies at runtime** — no frameworks, vanilla TypeScript bundled with esbuild.
+- **Zero dependencies at runtime** — no frameworks, vanilla TypeScript.
 - **Fast by design** — the bookmark subtree is indexed once in memory, so opening
   a folder is a synchronous lookup and a single DOM fragment render (one layout pass,
   no round-trip to `chrome.bookmarks`).
@@ -18,12 +18,13 @@ Built as a small showcase of modern extension development:
 - **Live sync** — bookmark changes are picked up automatically (debounced) while the
   tab is open.
 
-If the folder doesn't exist yet, Zapdial creates it on first install — drop your
-favorite sites into it and you're done.
+If the folder doesn't exist yet, Zapdial creates it on first install — drop your favorite sites into it, and you're done.
 
 ## 🔐 Permissions
 
 - `favicon` permission enables `chrome-extension://_favicon/…` from the new tab page (Chrome ≥ 104).
+- `bookmarks` is required to read the **Speed Dial** folder (and its nested subfolders) via the Bookmarks API, watch for live changes while a tab is open, and create the folder automatically on first install.
+- `https://icons.duckduckgo.com/*` — a favicon fallback for Firefox. Since Firefox doesn't yet support the `_favicon` API, tiles there fetch favicons from DuckDuckGo's icon service (`https://icons.duckduckgo.com/ip3/<domain>/ico`) keyed by site domain instead; on Chromium builds this host permission simply goes unused.
 - `storage` is used only for a tiny `storage.session` snapshot so the page can paint before the async `chrome.bookmarks` read resolves.
 
 ## 🚀 Installation

@@ -1,6 +1,7 @@
 :root {
 	--bg: #1c1b22;
 	--fg: #fbfbfe;
+	--nb-col: 3;
 	--tile-bg: rgba(42, 42, 42, 0.9);
 	--tile-fg: var(--fg);
 	--tile-hover: rgb(from var(--tile-bg) r g b / 75%);
@@ -32,7 +33,7 @@ dial-grid {
 .grid {
 	display: grid;
 	grid-auto-rows: minmax(160px, auto);
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(var(--nb-col), 1fr);
 	gap: 0.75rem;
 	align-content: start;
 }

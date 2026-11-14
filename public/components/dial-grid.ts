@@ -29,7 +29,7 @@ export class DialGrid extends HTMLElement {
 			this.navigate((ev as CustomEvent<DialNavigateDetail>).detail.id);
 		});
 
-		const cssVars = new Set(['bg', 'fg', 'tile-bg', 'tile-fg', 'tile-hover', 'tile-active']);
+		const cssVars = new Set(['bg', 'fg', 'tile-bg', 'tile-fg', 'tile-hover', 'tile-active', 'nb-col']);
 		for (let cssVar of cssVars) {
 			const value = localStorage.getItem(`css-${cssVar}`);
 			if (value) {
