@@ -12,24 +12,31 @@ const grid = DialGrid.instance;
 /** Depth-first search for the first folder named "Speed Dial". */
 async function findFolder(): Promise<BMNode | null> {
 	const tree = await chrome.bookmarks.getTree();
-	const stack: BMNode[] = [...tree];
-	while (stack.length) {
-		const node = stack.pop()!;
-		if (!node.url && node.title === FOLDER_TITLE) return node;
-		if (node.children) stack.push(...node.children);
+
+	const visit = function visit(nodes: BMNode[]): BMNode | null {
+		for (const node of nodes) {
+			if (!node.url && node.title === FOLDER_TITLE) return node;
+			if (node.children) {
+				const found = visit(node.children);
+				if (found) return found;
+			}
+		}
+		return null;
 	}
-	return null;
+
+	return visit(tree);
 }
 
 /** Index the folder + all descendants into a Map (single synchronous source of truth). */
 function indexSubtree(root: BMNode): Map<string, BMNode> {
 	const map = new Map<string, BMNode>();
-	const stack: BMNode[] = [root];
-	while (stack.length) {
-		const node = stack.pop()!;
+
+	const visit = function visit(node: BMNode): void {
 		map.set(node.id, node);
-		if (node.children) stack.push(...node.children);
+		node.children?.forEach(visit);
 	}
+
+	visit(root);
 	return map;
 }
 

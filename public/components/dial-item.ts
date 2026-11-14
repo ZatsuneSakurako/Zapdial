@@ -62,7 +62,7 @@ export class DialItem extends HTMLElement {
 		anchor.setAttribute("aria-label", isFolder ? `Open folder ${entry.title}` : entry.title);
 
 		// Rebuild children from scratch each render.
-		while (anchor.firstChild) anchor.removeChild(anchor.firstChild);
+		anchor.replaceChildren();
 
 		const label = document.createElement("span");
 		label.className = "label";
